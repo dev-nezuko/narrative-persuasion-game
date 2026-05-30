@@ -1,0 +1,44 @@
+# Environment
+.env
+.env.local
+.env.*
+!.env.example
+
+# Python
+venv/
+.venv/
+project_venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Test and tool output
+coverage/
+test-results/
+playwright-report/
+tmp/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Local game sessions (plaintext chat history)
+backend/sessions/
+
+# Logs
+logs/
+*.log

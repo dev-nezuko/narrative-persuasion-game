@@ -1,0 +1,190 @@
+.door-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.door-frame {
+  width: 256px;
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(180deg, #2a1a4a 0%, #1a0a2e 100%);
+  border: 4px solid var(--gold);
+  box-shadow: 
+    inset 0 0 30px rgba(184, 134, 11, 0.3),
+    0 0 20px rgba(0, 240, 255, 0.5);
+  perspective: 1000px;
+}
+
+/* Club Interior */
+.club-interior {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #0a0015 0%, #1a0030 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.club-interior.visible {
+  opacity: 1;
+}
+
+.lights-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.light-beam {
+  position: absolute;
+  top: 0;
+  width: 16px;
+  height: 100%;
+  transform-origin: top center;
+  animation: partyLights 0.3s ease-in-out infinite alternate;
+}
+
+.light-beam.pink {
+  background: linear-gradient(180deg, rgba(255, 45, 149, 0.6) 0%, transparent 80%);
+}
+
+.light-beam.cyan {
+  background: linear-gradient(180deg, rgba(0, 240, 255, 0.6) 0%, transparent 80%);
+}
+
+.light-beam.green {
+  background: linear-gradient(180deg, rgba(57, 255, 20, 0.6) 0%, transparent 80%);
+}
+
+.light-beam.yellow {
+  background: linear-gradient(180deg, rgba(255, 255, 0, 0.6) 0%, transparent 80%);
+}
+
+.light-beam.purple {
+  background: linear-gradient(180deg, rgba(184, 41, 221, 0.6) 0%, transparent 80%);
+}
+
+@keyframes partyLights {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.silhouettes {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  z-index: 10;
+}
+
+.silhouette {
+  background: #000;
+  border-radius: 50% 50% 0 0;
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Door Leaves */
+.doors {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.door-leaf {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(180deg, #3d2a5f 0%, #2a1a4a 50%, #1a0a2e 100%);
+  border: 3px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transition: transform 1.5s ease-out;
+}
+
+.door-leaf.left {
+  transform-origin: left center;
+  border-radius: 8px 0 0 8px;
+}
+
+.door-leaf.right {
+  transform-origin: right center;
+  border-radius: 0 8px 8px 0;
+}
+
+.door-leaf.left.open {
+  transform: rotateY(-110deg);
+}
+
+.door-leaf.right.open {
+  transform: rotateY(110deg);
+}
+
+.door-decoration {
+  width: 64px;
+  height: 160px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.2) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.door-decoration-inner {
+  width: 40px;
+  height: 112px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.1) 0%, transparent 100%);
+}
+
+/* Neon Glow */
+.door-glow {
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--neon-cyan);
+  border-radius: 24px 24px 0 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Velvet Rope */
+.velvet-rope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rope-post {
+  width: 12px;
+  height: 64px;
+  background: linear-gradient(180deg, #b8860b 0%, #8b6914 100%);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.rope {
+  width: 128px;
+  height: 8px;
+  background: linear-gradient(90deg, #8b0000 0%, #cc0000 50%, #8b0000 100%);
+  border-radius: 4px;
+}
+

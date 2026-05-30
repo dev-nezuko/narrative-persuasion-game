@@ -1,0 +1,140 @@
+/* ============================================
+   App Layout - Doorman Game
+   ============================================ */
+
+.app {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.app-header {
+  display: grid;
+  grid-template-columns: 200px 1fr 100px;
+  align-items: center;
+  padding: 12px 24px;
+  background: rgba(13, 5, 24, 0.8);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 50;
+}
+
+.header-left {
+  text-align: left;
+}
+
+.app-title {
+  font-family: var(--font-cyber);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+.app-subtitle {
+  font-family: var(--font-cyber);
+  font-size: 0.625rem;
+  color: var(--neon-pink);
+  letter-spacing: 0.3em;
+  margin: 4px 0 0 0;
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+.header-center {
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: white;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.1);
+}
+
+.icon-btn.active {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+/* Footer */
+.app-footer {
+  background: rgba(13, 5, 24, 0.8);
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 50;
+}
+
+/* Error Banner */
+.error-banner {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 68, 68, 0.9);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  z-index: 100;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-header {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+  
+  .header-left {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+  
+  .header-center {
+    grid-column: 1;
+  }
+  
+  .header-right {
+    grid-column: 2;
+  }
+  
+  .app-title {
+    font-size: 1rem;
+  }
+}

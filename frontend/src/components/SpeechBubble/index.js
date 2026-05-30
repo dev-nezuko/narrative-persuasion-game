@@ -1,0 +1,2 @@
+export { SpeechBubble } from './SpeechBubble';
+
