@@ -1,0 +1,2 @@
+export { ScorePopup } from './ScorePopup';
+

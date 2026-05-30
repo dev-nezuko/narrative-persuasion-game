@@ -1,0 +1,49 @@
+.speech-bubble {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 16px 20px;
+  max-width: 280px;
+  color: #1a0a2e;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 14px solid rgba(255, 255, 255, 0.95);
+}
+
+.speech-bubble.left::after {
+  left: 30px;
+}
+
+.speech-bubble.right::after {
+  right: 30px;
+}
+
+.speech-text {
+  display: block;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+

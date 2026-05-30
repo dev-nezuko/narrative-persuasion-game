@@ -1,0 +1,30 @@
+.skyline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, 
+    transparent 0%,
+    rgba(184, 41, 221, 0.1) 60%,
+    rgba(184, 41, 221, 0.3) 100%
+  );
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.buildings {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 0 40px;
+}
+
+.building {
+  background: linear-gradient(180deg, #2a1a4a 0%, #1a0a2e 100%);
+  box-shadow: 0 0 10px rgba(184, 41, 221, 0.5);
+  border-radius: 4px 4px 0 0;
+}
+
