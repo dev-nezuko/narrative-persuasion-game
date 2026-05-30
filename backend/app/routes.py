@@ -20,7 +20,8 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 import requests
 
-from .config import VENICE_API_KEY
+from . import fake_provider
+from .config import PROVIDER, VENICE_API_KEY
 from .rate_limit import SlidingWindowLimiter
 from .guardrails import INJECTION_SCORE, looks_like_prompt_injection, neutralize_player_text
 from .prompts import (
@@ -125,6 +126,13 @@ def get_mood_instruction(mood_level: str) -> str:
     return mood_map.get(mood_level, MOOD_NEUTRAL)
 
 
+def call_model(role: str, messages: list) -> dict:
+    """Route a judge/doorman request to the offline fake or to Venice."""
+    if PROVIDER == "fake":
+        return fake_provider.complete(role, messages)
+    return call_mor_api(JUDGE_MODEL if role == "judge" else DOORMAN_MODEL, messages)
+
+
 def call_mor_api(model: str, messages: list) -> dict:
     """
     Call the MOR Chat API with the given model and messages.
@@ -167,7 +175,7 @@ def call_tts_api(text: str) -> Optional[str]:
 
     This is the third agent in our system - it gives Marcus a voice!
     """
-    if not TTS_ENABLED or not VENICE_API_KEY:
+    if PROVIDER != "venice" or not TTS_ENABLED or not VENICE_API_KEY:
         return None
 
     # Clean the text for TTS (remove action markers like *pauses*)
@@ -237,7 +245,7 @@ def call_judge_agent(session_id: str, user_message: str) -> dict:
     ]
 
     # Call the Judge model
-    response = call_mor_api(JUDGE_MODEL, messages)
+    response = call_model("judge", messages)
 
     try:
         content = response["choices"][0]["message"]["content"]
@@ -320,7 +328,7 @@ def call_doorman_agent(session_id: str, user_message: str, won: bool = False) ->
     messages.append({"role": "user", "content": user_message})
 
     # Call the Doorman model
-    response = call_mor_api(DOORMAN_MODEL, messages)
+    response = call_model("doorman", messages)
 
     try:
         content = response["choices"][0]["message"]["content"]
@@ -336,7 +344,11 @@ def call_doorman_agent(session_id: str, user_message: str, won: bool = False) ->
 @router.get("/test-env")
 def test_env():
     """Local configuration status only; never sends a provider request."""
-    return {"status": "ok", "provider_configured": bool(VENICE_API_KEY)}
+    return {
+        "status": "ok",
+        "provider": PROVIDER,
+        "provider_configured": PROVIDER == "fake" or bool(VENICE_API_KEY),
+    }
 
 
 @router.post("/chat", response_model=ChatResponse)

@@ -111,7 +111,7 @@ def test_successful_turn_and_winning_threshold(session_id):
 
 def test_malformed_judge_output_becomes_neutral_and_score_is_clamped(session_id):
     for content, expected in [('[]', 0), ('{"score":true}', 0), ('{"score":200}', 20), ('{"score":-200}', -20)]:
-        with patch.object(routes, "call_mor_api", return_value={"choices": [{"message": {"content": content}}]}):
+        with patch.object(routes, "call_model", return_value={"choices": [{"message": {"content": content}}]}):
             assert routes.call_judge_agent(session_id, "hello")["score"] == expected
 
 
