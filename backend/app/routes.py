@@ -19,6 +19,7 @@ from pydantic import BaseModel, Field
 import requests
 
 from .config import VENICE_API_KEY
+from .guardrails import INJECTION_SCORE, looks_like_prompt_injection, neutralize_player_text
 from .prompts import (
     DOORMAN_BACKSTORY,
     DOORMAN_SYSTEM_PROMPT,
@@ -205,14 +206,13 @@ def call_judge_agent(session_id: str, user_message: str) -> dict:
     Output:
     - {"reasoning": str, "score": int (-20 to +20)}
     """
-    # Get conversation history formatted for the prompt
-    history_text = get_history_for_prompt(session_id)
+    if looks_like_prompt_injection(user_message):
+        return {"reasoning": "Instruction-override attempt", "score": INJECTION_SCORE}
 
-    # Build the judge prompt with all context
     judge_prompt = JUDGE_SYSTEM_PROMPT.format(
         backstory=DOORMAN_BACKSTORY,
-        history=history_text,
-        latest_message=user_message
+        history=get_history_for_prompt(session_id),
+        latest_message=neutralize_player_text(user_message),
     )
 
     messages = [

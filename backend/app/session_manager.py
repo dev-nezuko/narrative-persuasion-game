@@ -19,6 +19,8 @@ from typing import Optional
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .guardrails import neutralize_player_text
+
 SESSIONS_DIR = Path(os.environ.get("DOORMAN_SESSION_DIR", str(Path(__file__).parent.parent / "sessions")))
 SESSION_TTL_HOURS = float(os.environ.get("DOORMAN_SESSION_TTL_HOURS", "24"))
 SESSION_LOCK = RLock()
@@ -169,7 +171,7 @@ def get_history_for_prompt(session_id: str, max_messages: int = 30) -> str:
 
     recent = history[-max_messages:]
     formatted = [
-        f"{'User' if msg['role'] == 'user' else 'Marcus (Doorman)'}: {msg['content']}"
+        f"{'User' if msg['role'] == 'user' else 'Marcus (Doorman)'}: {neutralize_player_text(msg['content'])}"
         for msg in recent
     ]
     if len(history) > max_messages:
