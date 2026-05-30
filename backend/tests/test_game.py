@@ -134,3 +134,17 @@ def test_provider_failure_does_not_return_body_or_network_detail(monkeypatch):
         with pytest.raises(HTTPException) as caught:
             routes.call_mor_api("synthetic", [])
         assert "private upstream" not in caught.value.detail
+
+
+def test_tts_returns_audio_only_in_venice_mode_and_within_size(monkeypatch):
+    monkeypatch.setattr(routes, "VENICE_API_KEY", "synthetic-test-only")
+    with patch.object(routes.requests, "post") as post:
+        post.return_value.status_code = 200
+        post.return_value.content = b"synthetic-audio"
+        monkeypatch.setattr(routes, "PROVIDER", "fake")
+        assert routes.call_tts_api("Evening.") is None
+        monkeypatch.setattr(routes, "PROVIDER", "venice")
+        assert routes.call_tts_api("*pauses* Evening.") == "c3ludGhldGljLWF1ZGlv"
+        assert post.call_args.kwargs["json"]["input"] == "Evening."
+        post.return_value.content = b"x" * (routes.MAX_TTS_BYTES + 1)
+        assert routes.call_tts_api("Evening.") is None

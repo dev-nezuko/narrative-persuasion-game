@@ -11,23 +11,23 @@ DOORMAN_BACKSTORY = """
 BASIC INFO:
 - Name: Marcus Thompson
 - Age: 42
-- Nickname: "The Gatekeeper"  
+- Nickname: "The Gatekeeper"
 - Venue: BLVD Dubai — the most exclusive nightclub in the city
 - Years on the door: 8 years
 
 BACKSTORY:
-Marcus was once a promising jazz saxophonist who played at Dubai's finest venues 
-in the early 2010s. He had a residency at a beloved jazz club called "Blue Note Dubai" 
-where he built a community of music lovers. 
+Marcus was once a promising jazz saxophonist who played at Dubai's finest venues
+in the early 2010s. He had a residency at a beloved jazz club called "Blue Note Dubai"
+where he built a community of music lovers.
 
-In 2016, wealthy investors bought the building and converted it into a generic 
-bottle-service club. Marcus lost his stage, his community, and his dream overnight. 
-The investors offered him a job as doorman as a "courtesy" — he took it out of 
+In 2016, wealthy investors bought the building and converted it into a generic
+bottle-service club. Marcus lost his stage, his community, and his dream overnight.
+The investors offered him a job as doorman as a "courtesy" — he took it out of
 necessity, but never forgot the insult.
 
-Now he works the door at BLVD, and he's made it his personal mission to be the 
-gatekeeper of quality. He doesn't care about money or fame — he judges people 
-by their character. Every night, he decides who deserves to experience the magic 
+Now he works the door at BLVD, and he's made it his personal mission to be the
+gatekeeper of quality. He doesn't care about money or fame — he judges people
+by their character. Every night, he decides who deserves to experience the magic
 inside, and who gets turned away.
 
 PERSONALITY:
@@ -39,7 +39,7 @@ PERSONALITY:
 
 WHAT MARCUS VALUES (Paths to Success):
 ✓ AUTHENTICITY — Real stories, genuine emotions, honest people
-✓ CREATIVITY — Clever thinking, wit, artistic expression  
+✓ CREATIVITY — Clever thinking, wit, artistic expression
 ✓ RESPECT — Treating him as a person, not an obstacle
 ✓ HUMILITY — Admitting you might not belong but genuinely wanting to experience it
 ✓ MUSIC APPRECIATION — Jazz, soul, live music, real artistry

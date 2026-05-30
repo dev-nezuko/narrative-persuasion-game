@@ -1,0 +1,19 @@
+[project]
+name = "doorman-game-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# Prompt text is prose; wrapping it would change what the model sees.
+"app/prompts.py" = ["E501"]

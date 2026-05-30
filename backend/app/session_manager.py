@@ -6,18 +6,18 @@
 # server restarts.
 # ============================================================
 
-import os
 import json
+import os
 import re
 import secrets
 import tempfile
 import time
-from threading import RLock
-from copy import deepcopy
 from contextlib import contextmanager
-from typing import Optional
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
+from threading import RLock
+from typing import Optional
 
 from .guardrails import neutralize_player_text
 
@@ -68,7 +68,9 @@ def _save_session_to_file(session: dict) -> None:
     SESSIONS_DIR.mkdir(parents=True, exist_ok=True, mode=0o700)
     temporary = None
     try:
-        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=SESSIONS_DIR, prefix=".session-", delete=False) as handle:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=SESSIONS_DIR, prefix=".session-", delete=False
+        ) as handle:
             temporary = Path(handle.name)
             json.dump(session, handle, indent=2, default=str)
         os.replace(temporary, path)
