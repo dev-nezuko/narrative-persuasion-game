@@ -41,6 +41,10 @@ export function useChat() {
   const [audioData, setAudioData] = useState(null);
   const [ttsEnabled, setTtsEnabled] = useState(false);
   const busy = useRef(false);
+  // Local React keys only. crypto.randomUUID would be simpler but is undefined on plain-HTTP
+  // origins such as a LAN address, which used to freeze the game mid-send.
+  const nextMessageId = useRef(0);
+  const newMessageId = () => `local-${++nextMessageId.current}`;
 
   useEffect(() => {
     let active = true;
@@ -49,7 +53,7 @@ export function useChat() {
       persist(session.session_id);
       setSessionId(session.session_id);
       setGameState(gameStateFrom(session));
-      setMessages((session.history || []).map((message, index) => ({ id: index, role: message.role, content: message.content })));
+      setMessages((session.history || []).map((message, index) => ({ id: `restored-${index}`, role: message.role, content: message.content })));
       setRestoreFailed(false);
       setError(null);
     }).catch(() => {
@@ -71,12 +75,12 @@ export function useChat() {
     const message = text.trim();
     if (busy.current || isLoading || !sessionId || !message) return false;
     busy.current = true; setIsSending(true); setError(null); setLastScore(null); setAudioData(null);
-    const id = crypto.randomUUID();
+    const id = newMessageId();
     setMessages(previous => [...previous, { id, role: 'user', content: message }]);
     try {
       const response = await sendMessage(sessionId, message, ttsEnabled);
       if (typeof response.reply !== 'string' || !Number.isFinite(response.cumulative_score)) throw new Error('The game returned an invalid response.');
-      setMessages(previous => [...previous, { id: crypto.randomUUID(), role: 'assistant', content: response.reply }]);
+      setMessages(previous => [...previous, { id: newMessageId(), role: 'assistant', content: response.reply }]);
       setGameState(gameStateFrom(response)); setLastScore({ delta: response.score_delta }); setAudioData(response.audio_base64 || null);
       return true;
     } catch (failure) {

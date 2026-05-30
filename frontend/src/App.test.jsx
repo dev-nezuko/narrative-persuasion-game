@@ -74,4 +74,14 @@ describe('App', () => {
     expect(await screen.findByRole('button', { name: /play again/i })).toHaveFocus();
     expect(screen.getByRole('dialog', { name: /access granted/i })).toBeInTheDocument();
   });
+
+  it('still plays on plain-HTTP origins where crypto.randomUUID is missing', async () => {
+    vi.stubGlobal('crypto', { ...globalThis.crypto, randomUUID: undefined });
+    installFakeServer({ chat: () => ({ status: 200, delta: 10, reply: 'Go on.' }) });
+    render(<App />);
+    await waitFor(() => expect(input()).toBeEnabled());
+    await userEvent.type(input(), 'Evening{enter}');
+    expect(await screen.findByText('Go on.')).toBeInTheDocument();
+    expect(input()).toBeEnabled();
+  });
 });
