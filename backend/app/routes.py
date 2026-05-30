@@ -30,6 +30,7 @@ from .prompts import (
     WIN_INSTRUCTION,
 )
 from .session_manager import (
+    create_session,
     get_session,
     update_score,
     add_to_history,
@@ -418,16 +419,7 @@ def _chat_turn(chat_req: ChatRequest):
     )
 
 
-@router.get("/session/{session_id}")
-def get_session_state(session_id: str):
-    """
-    Get the current state of a session.
-    Useful for the frontend to restore state on page refresh.
-    """
-    try:
-        session = get_session(session_id)
-    except ValueError:
-        raise HTTPException(status_code=422, detail="Invalid session identifier") from None
+def _public_state(session: dict) -> dict:
     return {
         "session_id": session["session_id"],
         "cumulative_score": session["cumulative_score"],
@@ -436,18 +428,28 @@ def get_session_state(session_id: str):
         "message_count": session["message_count"],
         "created_at": session["created_at"],
         "updated_at": session.get("updated_at"),
-        "history": session["history"]
+        "history": session["history"],
     }
+
+
+@router.post("/session", status_code=201)
+def create_session_endpoint():
+    """Start a new game under a server-generated session ID."""
+    with SESSION_LOCK:
+        return _public_state(create_session())
+
+
+@router.get("/session/{session_id}")
+def get_session_state(session_id: str):
+    """Restore an existing session (404 if it expired or never existed)."""
+    return _public_state(get_session(session_id))
 
 
 @router.post("/session/reset")
 def reset_session_endpoint(session_id: str):
-    """Reset a session to start a new game."""
-    try:
-        with SESSION_LOCK:
-            session = reset_session(session_id)
-    except ValueError:
-        raise HTTPException(status_code=422, detail="Invalid session identifier") from None
+    """Reset an existing session to start a new game."""
+    with SESSION_LOCK:
+        session = reset_session(session_id)
     return {
         "status": "Session reset successfully",
         "session_id": session["session_id"],
