@@ -15,6 +15,8 @@ from app.main import app
 def local_session_files(tmp_path, monkeypatch):
     monkeypatch.setattr(sessions, "SESSIONS_DIR", tmp_path)
     sessions._session_cache.clear()
+    routes.turn_limiter.clear()
+    routes.session_creation_limiter.clear()
     yield
     sessions._session_cache.clear()
 

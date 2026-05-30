@@ -11,7 +11,9 @@
 # ============================================================
 
 import re
+import os
 import json
+import math
 import base64
 from typing import Optional
 from fastapi import APIRouter, HTTPException
@@ -19,6 +21,7 @@ from pydantic import BaseModel, Field
 import requests
 
 from .config import VENICE_API_KEY
+from .rate_limit import SlidingWindowLimiter
 from .guardrails import INJECTION_SCORE, looks_like_prompt_injection, neutralize_player_text
 from .prompts import (
     DOORMAN_BACKSTORY,
@@ -59,6 +62,20 @@ DOORMAN_MODEL = "qwen3-4b"        # Fast, chatty model for conversation
 TTS_MODEL = "tts-kokoro"          # Text-to-speech model
 TTS_VOICE = "am_adam"             # Male voice for Marcus (American Male)
 TTS_ENABLED = True                # Toggle TTS on/off globally
+
+
+# Abuse limits: model calls cost money, and every session is a file on disk.
+TURNS_PER_MINUTE = int(os.environ.get("DOORMAN_TURNS_PER_MINUTE", "8"))
+MAX_TURNS_PER_SESSION = int(os.environ.get("DOORMAN_MAX_TURNS_PER_SESSION", "60"))
+NEW_SESSIONS_PER_MINUTE = int(os.environ.get("DOORMAN_NEW_SESSIONS_PER_MINUTE", "30"))
+turn_limiter = SlidingWindowLimiter(TURNS_PER_MINUTE, 60)
+session_creation_limiter = SlidingWindowLimiter(NEW_SESSIONS_PER_MINUTE, 60)
+
+
+def _enforce(limiter: SlidingWindowLimiter, key: str, detail: str) -> None:
+    wait = limiter.retry_after(key)
+    if wait:
+        raise HTTPException(status_code=429, detail=detail, headers={"Retry-After": str(math.ceil(wait))})
 
 
 # ============================================================
@@ -324,6 +341,10 @@ def test_env():
 
 @router.post("/chat", response_model=ChatResponse)
 def chat_endpoint(chat_req: ChatRequest):
+    session = get_session(chat_req.session_id)
+    if session["message_count"] >= MAX_TURNS_PER_SESSION:
+        raise HTTPException(status_code=409, detail="This conversation has reached its turn limit. Start over to play again.")
+    _enforce(turn_limiter, chat_req.session_id, "Too many messages for this session. Slow down and try again shortly.")
     with session_turn(chat_req.session_id):
         return _chat_turn(chat_req)
 
@@ -435,6 +456,7 @@ def _public_state(session: dict) -> dict:
 @router.post("/session", status_code=201)
 def create_session_endpoint():
     """Start a new game under a server-generated session ID."""
+    _enforce(session_creation_limiter, "global", "Too many new games right now. Try again shortly.")
     with SESSION_LOCK:
         return _public_state(create_session())
 
