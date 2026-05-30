@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DOORMAN_PROVIDER: ${DOORMAN_PROVIDER:-fake}
+      VENICE_API_KEY: ${VENICE_API_KEY:-}
+    volumes:
+      - sessions:/data/sessions
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  sessions:

@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+project_venv/
+sessions/
+tests/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
