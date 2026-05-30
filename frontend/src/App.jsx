@@ -5,98 +5,104 @@ import { ChatInput } from './components/ChatInput';
 import { VictoryScreen } from './components/VictoryScreen';
 import { ScorePopup } from './components/ScorePopup';
 import { AudioPlayer } from './components/AudioPlayer';
+import { RestartIcon, VoiceOffIcon, VoiceOnIcon } from './components/Icons';
 import './App.css';
+
+const OPENING_LINE = "Line's long tonight. Give me one good reason you belong inside.";
 
 function App() {
   const {
     messages,
     isLoading,
+    isRestoring,
     error,
+    restoreFailed,
     gameState,
     lastScore,
     audioData,
     ttsEnabled,
     send,
     reset,
+    retryRestore,
     clearLastScore,
     clearAudio,
     toggleTts,
   } = useChat();
 
-  // Get the latest message from each participant
-  const latestPlayerMessage = [...messages].reverse().find(m => m.role === 'user')?.content || '';
-  const latestDoormanMessage = [...messages].reverse().find(m => m.role === 'assistant')?.content || '';
+  const latestPlayerMessage = messages.findLast(m => m.role === 'user')?.content || '';
+  const latestDoormanMessage = messages.findLast(m => m.role === 'assistant')?.content
+    || (isRestoring || restoreFailed ? '' : OPENING_LINE);
 
   return (
     <div className="app">
-      {/* Header */}
       <header className="app-header">
         <div className="header-left">
-          <h1 className="app-title">🎭 THE DOORMAN GAME</h1>
-          <p className="app-subtitle">FICTIONAL CLUB · MODEL-SCORED GAME</p>
+          <h1 className="app-title">The Doorman</h1>
+          <p className="app-subtitle">A persuasion game at a fictional club</p>
         </div>
         <div className="header-center">
-          <InfluenceMeter 
+          <InfluenceMeter
             score={gameState.cumulativeScore}
             threshold={gameState.threshold}
             accessGranted={gameState.accessGranted}
           />
         </div>
         <div className="header-right">
-          <button 
+          <button
+            type="button"
             className={`icon-btn ${ttsEnabled ? 'active' : ''}`}
             onClick={toggleTts}
-            aria-label={ttsEnabled ? 'Mute voice' : 'Enable voice'}
+            aria-label={ttsEnabled ? 'Turn voice off' : 'Turn voice on'}
             aria-pressed={ttsEnabled}
-            title={ttsEnabled ? 'Mute voice' : 'Enable voice'}
+            title={ttsEnabled ? 'Turn voice off' : 'Turn voice on (needs a live provider)'}
           >
-            {ttsEnabled ? '🔊' : '🔇'}
+            {ttsEnabled ? <VoiceOnIcon /> : <VoiceOffIcon />}
           </button>
-          <button className="icon-btn" onClick={reset} disabled={isLoading} aria-label="Start over" title="Start over">
-            ↺
+          <button type="button" className="icon-btn" onClick={reset} disabled={isLoading} aria-label="Start over" title="Start over">
+            <RestartIcon />
           </button>
         </div>
       </header>
 
-      {/* Main Stage */}
-      <Stage 
-        playerMessage={latestPlayerMessage}
-        doormanMessage={latestDoormanMessage}
-        isLoading={isLoading}
-        isOpen={gameState.accessGranted}
-      />
+      <main className="app-main">
+        <Stage
+          playerMessage={latestPlayerMessage}
+          doormanMessage={latestDoormanMessage}
+          isLoading={isLoading}
+          isOpen={gameState.accessGranted}
+        />
+      </main>
 
-      {/* Error Display */}
       {error && (
         <div className="error-banner" role="alert">
-          ⚠️ {error}
+          <span>{error}</span>
+          {restoreFailed && <button type="button" onClick={retryRestore}>Try again</button>}
         </div>
       )}
 
-      {/* Chat Input */}
       <footer className="app-footer">
-        <ChatInput 
+        {messages.length === 0 && !isRestoring && !restoreFailed && (
+          <p className="game-hint">Marcus decides who gets in. Find out what he cares about.</p>
+        )}
+        <ChatInput
           onSend={send}
           isLoading={isLoading}
-          disabled={gameState.accessGranted}
+          disabled={gameState.accessGranted || restoreFailed}
         />
       </footer>
 
-      {/* Score Popup */}
       {lastScore && (
-        <ScorePopup 
-          score={lastScore.delta} 
+        <ScorePopup
+          score={lastScore.delta}
           onComplete={clearLastScore}
         />
       )}
 
-      {/* Audio Player (hidden) */}
-      <AudioPlayer 
+      <AudioPlayer
         audioBase64={audioData}
         onFinished={clearAudio}
       />
 
-      {/* Victory Overlay */}
       {gameState.accessGranted && (
         <VictoryScreen onPlayAgain={reset} />
       )}

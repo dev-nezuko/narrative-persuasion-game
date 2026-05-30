@@ -9,12 +9,12 @@ export function CharacterColumn({
   const isPlayer = type === 'player';
   
   return (
-    <div className="character-column">
+    <div className={`character-column ${isPlayer ? 'player' : 'doorman'}`}>
       {/* Speech Bubble */}
-      <div className="bubble-container">
+      <div className="bubble-container" aria-live={isPlayer ? undefined : 'polite'}>
         {/* Show typing indicator OR message, not both */}
         {isLoading && !isPlayer ? (
-          <div className="typing-bubble">
+          <div className="typing-bubble" role="status" aria-label="The doorman is thinking">
             <span className="dot" />
             <span className="dot" />
             <span className="dot" />
@@ -30,11 +30,11 @@ export function CharacterColumn({
       
       {/* Character Avatar */}
       <div className="character-avatar-container">
-        <div className={`character-glow ${isPlayer ? 'cyan' : 'purple'}`} />
+        <div className={`character-glow ${isPlayer ? 'player' : 'doorman'}`} />
         <div className="character-wrapper">
           {isPlayer ? <PlayerAvatar /> : <DoormanAvatar />}
-          <p className={`character-name ${isPlayer ? 'cyan' : 'purple'}`}>
-            {isPlayer ? 'YOU' : 'THE DOORMAN'}
+          <p className={`character-name ${isPlayer ? 'player' : 'doorman'}`}>
+            {isPlayer ? 'You' : 'Marcus, the doorman'}
           </p>
         </div>
       </div>
@@ -44,11 +44,11 @@ export function CharacterColumn({
 
 function PlayerAvatar() {
   return (
-    <svg viewBox="0 0 200 350" className="character-svg">
+    <svg viewBox="0 0 200 350" className="character-svg" aria-hidden="true">
       <defs>
         <linearGradient id="jacket" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style={{ stopColor: '#2a1a4a' }} />
-          <stop offset="100%" style={{ stopColor: '#1a0a2e' }} />
+          <stop offset="0%" style={{ stopColor: '#2f4f48' }} />
+          <stop offset="100%" style={{ stopColor: '#1b302c' }} />
         </linearGradient>
       </defs>
       {/* Head */}
@@ -58,8 +58,8 @@ function PlayerAvatar() {
       {/* Shirt */}
       <path d="M80 130 L80 200 L120 200 L120 130 Q100 145 80 130" fill="#f5f5f5" />
       {/* Pants */}
-      <path d="M60 200 L70 340 L90 340 L95 200" fill="#1a1a2e" />
-      <path d="M105 200 L110 340 L130 340 L140 200" fill="#1a1a2e" />
+      <path d="M60 200 L70 340 L90 340 L95 200" fill="#15110f" />
+      <path d="M105 200 L110 340 L130 340 L140 200" fill="#15110f" />
       {/* Hair */}
       <ellipse cx="100" cy="50" rx="35" ry="12" fill="#4a3728" />
       <path d="M70 45 Q100 20 130 45" stroke="#4a3728" strokeWidth="8" fill="none" />
@@ -74,11 +74,11 @@ function PlayerAvatar() {
 
 function DoormanAvatar() {
   return (
-    <svg viewBox="0 0 200 350" className="character-svg doorman">
+    <svg viewBox="0 0 200 350" className="character-svg doorman" aria-hidden="true">
       <defs>
         <linearGradient id="suit" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style={{ stopColor: '#1a2a4a' }} />
-          <stop offset="100%" style={{ stopColor: '#0a1525' }} />
+          <stop offset="0%" style={{ stopColor: '#26201c' }} />
+          <stop offset="100%" style={{ stopColor: '#0f0c0a' }} />
         </linearGradient>
       </defs>
       {/* Head */}
@@ -88,12 +88,12 @@ function DoormanAvatar() {
       {/* Shirt */}
       <path d="M80 140 L100 155 L120 140 L120 200 L80 200 Z" fill="#f0f0f0" />
       {/* Tie */}
-      <path d="M100 155 L100 180" stroke="#1a1a2e" strokeWidth="3" />
+      <path d="M100 155 L100 180" stroke="#8c2433" strokeWidth="3" />
       {/* Pants */}
-      <path d="M45 200 L55 340 L80 340 L85 200" fill="#1a1a2e" />
-      <path d="M115 200 L120 340 L145 340 L155 200" fill="#1a1a2e" />
+      <path d="M45 200 L55 340 L80 340 L85 200" fill="#15110f" />
+      <path d="M115 200 L120 340 L145 340 L155 200" fill="#15110f" />
       {/* Pocket Square */}
-      <rect x="120" y="160" width="35" height="25" rx="2" fill="#e8e8e8" transform="rotate(5 137 172)" />
+      <rect x="120" y="160" width="35" height="25" rx="2" fill="#8c2433" transform="rotate(5 137 172)" />
       {/* Hair */}
       <ellipse cx="100" cy="42" rx="38" ry="10" fill="#2a2a2a" />
       <path d="M65 35 Q100 15 135 35" stroke="#2a2a2a" strokeWidth="10" fill="none" />

@@ -5,16 +5,13 @@ export function AudioPlayer({ audioBase64, onFinished }) {
 
   useEffect(() => {
     if (audioBase64 && audioRef.current) {
-      // Create audio URL from base64
       const audioBlob = base64ToBlob(audioBase64, 'audio/mpeg');
       const audioUrl = URL.createObjectURL(audioBlob);
       
       audioRef.current.src = audioUrl;
-      audioRef.current.play().catch(err => {
-        console.log('Audio autoplay blocked:', err);
-      });
+      // Browsers may block playback without a prior gesture; the text reply still shows.
+      audioRef.current.play().catch(() => {});
 
-      // Cleanup URL when done
       return () => {
         URL.revokeObjectURL(audioUrl);
       };
@@ -36,7 +33,6 @@ export function AudioPlayer({ audioBase64, onFinished }) {
   );
 }
 
-// Helper to convert base64 to Blob
 function base64ToBlob(base64, mimeType) {
   const byteCharacters = atob(base64);
   const byteNumbers = new Array(byteCharacters.length);

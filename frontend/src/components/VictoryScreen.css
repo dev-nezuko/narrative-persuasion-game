@@ -4,9 +4,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at center, rgba(57, 255, 20, 0.2) 0%, transparent 70%);
+  background: linear-gradient(180deg, rgba(18, 14, 12, 0.9) 0%, rgba(18, 14, 12, 0.55) 45%, transparent 75%);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 14vh;
   justify-content: center;
   z-index: 200;
   pointer-events: none;
@@ -25,17 +26,17 @@
 }
 
 .victory-title {
-  font-family: var(--font-cyber);
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 900;
-  background: linear-gradient(90deg, var(--neon-green), var(--neon-yellow), var(--neon-green));
+  font-weight: 400;
+  background: linear-gradient(90deg, var(--brass), var(--brass-light), var(--brass));
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmer 2s linear infinite;
   text-shadow: none;
-  filter: drop-shadow(0 0 30px var(--neon-green));
+  filter: drop-shadow(0 2px 20px rgba(201, 162, 90, 0.35));
 }
 
 @keyframes shimmer {
@@ -46,41 +47,35 @@
 .victory-subtitle {
   font-family: var(--font-body);
   font-size: 1.5rem;
-  color: white;
-  opacity: 0.8;
+  color: var(--cream);
   margin-top: 16px;
 }
 
-.victory-rickroll {
-  font-family: var(--font-body);
-  font-size: 1.25rem;
-  color: var(--neon-pink);
-  margin-top: 12px;
-  animation: pulse 1s ease-in-out infinite;
+.victory-note {
+  color: var(--smoke);
+  margin-top: 8px;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+.victory-content {
+  padding: 0 16px;
 }
 
 .play-again-btn {
   margin-top: 32px;
   padding: 16px 48px;
-  border-radius: 50px;
-  border: 2px solid var(--neon-cyan);
-  background: transparent;
-  color: var(--neon-cyan);
-  font-family: var(--font-cyber);
+  border-radius: 6px;
+  border: 1px solid var(--brass);
+  background: var(--brass);
+  color: var(--ink);
+  font-family: var(--font-body);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  letter-spacing: 0.1em;
+  transition: background 0.2s ease;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .play-again-btn:hover {
-  background: var(--neon-cyan);
-  color: var(--darker-purple);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+  background: var(--brass-light);
 }

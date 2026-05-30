@@ -12,14 +12,17 @@ export function InfluenceMeter({ score, threshold, accessGranted }) {
 
   return (
     <div className="influence-meter">
-      <h2 className="meter-title">INFLUENCE METER</h2>
-      <div className="meter-track" role="progressbar" aria-label="Game influence" aria-valuemin={-50} aria-valuemax={threshold} aria-valuenow={score}>
+      <p className="meter-title" id="meter-label">
+        <span>Influence</span>
+        <span className="meter-goal">{threshold} to get in</span>
+      </p>
+      <div className="meter-track" role="progressbar" aria-labelledby="meter-label" aria-valuemin={-50} aria-valuemax={threshold} aria-valuenow={score}>
         <div 
           className={`meter-fill ${getMeterClass()}`}
           style={{ width: `${percentage}%` }}
         />
         <div className="meter-text">
-          {accessGranted ? 'ACCESS GRANTED' : `${Math.round(percentage)}%`}
+          {accessGranted ? 'Access granted' : `${Math.round(percentage)}%`}
         </div>
       </div>
     </div>

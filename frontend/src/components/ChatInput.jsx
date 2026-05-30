@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SendIcon } from './Icons';
 import './ChatInput.css';
 
 export function ChatInput({ onSend, isLoading, disabled }) {
@@ -20,24 +21,24 @@ export function ChatInput({ onSend, isLoading, disabled }) {
         className="chat-input"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder={disabled ? "You're in! Enjoy the party 🎉" : "What do you say to the doorman?"}
+        placeholder={disabled ? "You're in. Enjoy the night." : "What do you say to Marcus?"}
         disabled={isLoading || disabled}
         autoComplete="off"
       />
       <button
         type="submit"
-        aria-label="Send message"
+        aria-label={isLoading ? 'Waiting for the doorman' : 'Send message'}
         className="send-button"
         disabled={isLoading || disabled || !message.trim()}
       >
         {isLoading ? (
-          <span className="loading-dots">
+          <span className="loading-dots" aria-hidden="true">
             <span className="dot" />
             <span className="dot" />
             <span className="dot" />
           </span>
         ) : (
-          <span className="send-icon">➤</span>
+          <SendIcon className="send-icon" />
         )}
       </button>
     </form>

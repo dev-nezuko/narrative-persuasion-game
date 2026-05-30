@@ -1,24 +1,31 @@
 .influence-meter {
-  padding: 16px 24px;
-  max-width: 600px;
+  max-width: 560px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .meter-title {
-  text-align: center;
-  font-family: var(--font-cyber);
-  font-size: 0.875rem;
-  color: var(--neon-cyan);
-  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brass-light);
+  margin-bottom: 6px;
   letter-spacing: 0.2em;
-  text-shadow: 0 0 10px var(--neon-cyan);
+  text-transform: uppercase;
+}
+
+.meter-goal {
+  color: var(--smoke);
+  font-weight: 500;
+  letter-spacing: 0.08em;
 }
 
 .meter-track {
-  height: 32px;
-  border-radius: 16px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  border: 2px solid rgba(0, 240, 255, 0.3);
+  height: 28px;
+  border-radius: 4px;
+  background: rgba(244, 234, 216, 0.06);
+  border: 1px solid rgba(201, 162, 90, 0.55);
   overflow: hidden;
   position: relative;
 }
@@ -26,22 +33,18 @@
 .meter-fill {
   height: 100%;
   transition: width 0.5s ease-out, background 0.3s ease;
-  border-radius: 14px;
 }
 
 .meter-fill.negative {
-  background: linear-gradient(90deg, #ff4444, var(--neon-pink));
-  box-shadow: 0 0 20px var(--neon-pink);
+  background: var(--velvet);
 }
 
 .meter-fill.positive {
-  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
-  box-shadow: 0 0 20px var(--neon-cyan);
+  background: linear-gradient(90deg, #8a6a2e, var(--brass));
 }
 
 .meter-fill.winning {
-  background: linear-gradient(90deg, var(--neon-green), var(--neon-yellow));
-  box-shadow: 0 0 30px var(--neon-green);
+  background: linear-gradient(90deg, var(--brass), var(--brass-light));
 }
 
 .meter-text {
@@ -50,9 +53,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-cyber);
   font-size: 0.875rem;
   font-weight: 700;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.08em;
+  color: var(--cream);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }

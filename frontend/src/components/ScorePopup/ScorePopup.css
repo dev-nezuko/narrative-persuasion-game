@@ -8,38 +8,24 @@
 }
 
 .score-popup {
-  font-family: var(--font-cyber);
+  font-family: var(--font-display);
   font-size: 4rem;
   font-weight: 700;
   animation: scoreFloat 2s ease-out forwards;
 }
 
 .score-popup.positive {
-  color: var(--neon-green);
-  text-shadow: 
-    0 0 20px var(--neon-green),
-    0 0 40px var(--neon-green);
+  color: var(--brass-light);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.7);
 }
 
 .score-popup.negative {
-  color: #ff4444;
-  text-shadow: 
-    0 0 20px #ff4444,
-    0 0 40px #ff4444;
+  color: #e0645c;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.7);
 }
 
 @keyframes scoreFloat {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-30px) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-60px) scale(0.8);
-  }
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
 }
-

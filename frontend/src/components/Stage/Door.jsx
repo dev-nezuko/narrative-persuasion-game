@@ -2,7 +2,7 @@ import './Door.css';
 
 export function Door({ isOpen }) {
   return (
-    <div className="door-container">
+    <div className="door-container" aria-hidden="true">
       {/* Door Frame */}
       <div className="door-frame">
         {/* Club Interior (revealed when doors open) */}

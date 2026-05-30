@@ -1,51 +1,42 @@
 /* ============================================
-   App Layout - Doorman Game
+   App layout
    ============================================ */
 
 .app {
   height: 100vh;
+  height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Header */
 .app-header {
   display: grid;
-  grid-template-columns: 200px 1fr 100px;
+  grid-template-columns: minmax(180px, 1fr) minmax(0, 2fr) minmax(100px, 1fr);
   align-items: center;
+  gap: 16px;
   padding: 12px 24px;
-  background: rgba(13, 5, 24, 0.8);
-  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(18, 14, 12, 0.88);
+  border-bottom: 1px solid rgba(201, 162, 90, 0.35);
   z-index: 50;
 }
 
-.header-left {
-  text-align: left;
-}
-
 .app-title {
-  font-family: var(--font-cyber);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: white;
-  margin: 0;
-  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--brass-light);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
 }
 
 .app-subtitle {
-  font-family: var(--font-cyber);
-  font-size: 0.625rem;
-  color: var(--neon-pink);
-  letter-spacing: 0.3em;
-  margin: 4px 0 0 0;
-  text-shadow: 0 0 10px var(--neon-pink);
-}
-
-.header-center {
-  flex: 1;
+  font-size: 0.75rem;
+  color: var(--smoke);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 4px;
 }
 
 .header-right {
@@ -55,52 +46,92 @@
 }
 
 .icon-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(201, 162, 90, 0.5);
   background: transparent;
-  color: white;
-  font-size: 1.125rem;
+  color: var(--cream);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.icon-btn:hover {
-  border-color: var(--neon-cyan);
-  background: rgba(0, 240, 255, 0.1);
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-btn:hover:not(:disabled) {
+  border-color: var(--brass-light);
+  background: rgba(201, 162, 90, 0.12);
 }
 
 .icon-btn.active {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  border-color: var(--brass-light);
+  background: rgba(201, 162, 90, 0.2);
+  color: var(--brass-light);
 }
 
-/* Footer */
+.icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
 .app-footer {
-  background: rgba(13, 5, 24, 0.8);
-  border-top: 1px solid rgba(0, 240, 255, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(18, 14, 12, 0.88);
+  border-top: 1px solid rgba(201, 162, 90, 0.35);
   z-index: 50;
 }
 
-/* Error Banner */
+.game-hint {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--smoke);
+  padding: 10px 24px 0;
+}
+
 .error-banner {
   position: fixed;
-  bottom: 100px;
+  bottom: 104px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 68, 68, 0.9);
-  color: white;
-  padding: 12px 24px;
+  width: min(560px, calc(100% - 32px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--velvet);
+  border: 1px solid var(--velvet-bright);
+  color: var(--cream);
+  padding: 12px 16px 12px 20px;
   border-radius: 8px;
-  font-family: var(--font-body);
   font-weight: 600;
   z-index: 100;
   animation: slideUp 0.3s ease;
+}
+
+.error-banner button {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--cream);
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  cursor: pointer;
+}
+
+.error-banner button:hover {
+  background: rgba(244, 234, 216, 0.15);
 }
 
 @keyframes slideUp {
@@ -114,27 +145,38 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .app-header {
     grid-template-columns: 1fr auto;
-    gap: 12px;
+    gap: 8px 12px;
+    padding: 10px 16px;
   }
-  
+
   .header-left {
-    grid-column: 1 / -1;
-    text-align: center;
-  }
-  
-  .header-center {
     grid-column: 1;
+    grid-row: 1;
   }
-  
+
   .header-right {
     grid-column: 2;
+    grid-row: 1;
   }
-  
+
+  .header-center {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
   .app-title {
-    font-size: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+  }
+
+  .error-banner {
+    bottom: 96px;
   }
 }

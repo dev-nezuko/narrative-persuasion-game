@@ -29,16 +29,50 @@
 }
 
 @media (max-width: 600px) {
-  .stage-content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 16px;
+  .stage {
+    padding-bottom: 8px;
   }
-  
-  .stage-content > *:nth-child(1) { order: 1; } /* Player */
-  .stage-content > *:nth-child(2) { order: 3; } /* Door */
-  .stage-content > *:nth-child(3) { order: 2; } /* Doorman */
+
+  /* Bubbles get the full width above a compact row of player, door and doorman */
+  .stage-content {
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas:
+      "player-line player-line player-line"
+      "doorman-line doorman-line doorman-line"
+      "player door doorman";
+    gap: 10px 4px;
+    padding: 0 12px;
+  }
+
+  .stage-content .character-column {
+    display: contents;
+  }
+
+  .character-column.player .bubble-container { grid-area: player-line; justify-content: flex-start; }
+  .character-column.doorman .bubble-container { grid-area: doorman-line; justify-content: flex-end; }
+  .character-column.player .character-avatar-container { grid-area: player; justify-self: center; }
+  .character-column.doorman .character-avatar-container { grid-area: doorman; justify-self: center; }
+  .stage-content .door-container { grid-area: door; }
+
+  .bubble-container {
+    min-height: 0;
+    margin-bottom: 0;
+  }
+
+  .speech-bubble {
+    max-width: 88%;
+    font-size: 0.9375rem;
+    padding: 12px 14px;
+  }
+
+  .character-svg { width: 72px; }
+  .character-svg.doorman { width: 80px; }
+  .character-name { font-size: 0.625rem; letter-spacing: 0.1em; }
+
+  .door-frame { width: 132px; height: 168px; border-width: 3px; border-radius: 14px 14px 0 0; }
+  .door-decoration { width: 32px; height: 84px; }
+  .door-decoration-inner { width: 20px; height: 58px; }
+  .velvet-rope { gap: 4px; }
+  .rope-post { width: 8px; height: 34px; }
+  .rope { width: 64px; height: 6px; }
 }
-
-/* Index exports */
-

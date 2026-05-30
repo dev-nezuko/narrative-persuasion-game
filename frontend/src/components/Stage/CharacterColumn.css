@@ -13,7 +13,7 @@
 }
 
 .typing-bubble {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--cream);
   border-radius: 16px;
   padding: 16px 24px;
   display: flex;
@@ -24,7 +24,7 @@
 .typing-bubble .dot {
   width: 8px;
   height: 8px;
-  background: var(--neon-purple);
+  background: var(--velvet);
   border-radius: 50%;
   animation: loadingPulse 1.4s ease-in-out infinite both;
 }
@@ -32,17 +32,6 @@
 .typing-bubble .dot:nth-child(1) { animation-delay: 0s; }
 .typing-bubble .dot:nth-child(2) { animation-delay: 0.2s; }
 .typing-bubble .dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes loadingPulse {
-  0%, 80%, 100% {
-    transform: scale(0.6);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 
 .character-avatar-container {
   position: relative;
@@ -58,12 +47,12 @@
   filter: blur(10px);
 }
 
-.character-glow.cyan {
-  background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.3) 0%, transparent 70%);
+.character-glow.player {
+  background: radial-gradient(ellipse at center, rgba(134, 188, 174, 0.3) 0%, transparent 70%);
 }
 
-.character-glow.purple {
-  background: radial-gradient(ellipse at center, rgba(184, 41, 221, 0.3) 0%, transparent 70%);
+.character-glow.doorman {
+  background: radial-gradient(ellipse at center, rgba(140, 36, 51, 0.3) 0%, transparent 70%);
 }
 
 .character-wrapper {
@@ -82,19 +71,18 @@
 
 .character-name {
   text-align: center;
-  font-family: var(--font-cyber);
   font-size: 0.75rem;
+  font-weight: 700;
   margin-top: 8px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
-.character-name.cyan {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 10px var(--neon-cyan);
+.character-name.player {
+  color: var(--patina);
 }
 
-.character-name.purple {
-  color: var(--neon-purple);
-  text-shadow: 0 0 10px var(--neon-purple);
+.character-name.doorman {
+  color: var(--brass-light);
 }
 

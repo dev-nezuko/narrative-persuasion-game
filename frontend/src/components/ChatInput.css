@@ -1,32 +1,34 @@
 .chat-input-form {
   display: flex;
   gap: 12px;
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 16px 24px;
+  padding: 12px 16px 16px;
 }
 
 .chat-input {
   flex: 1;
   padding: 14px 24px;
-  border-radius: 50px;
-  border: 2px solid rgba(0, 240, 255, 0.5);
+  min-width: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(201, 162, 90, 0.6);
   background: var(--surface);
-  color: white;
+  color: var(--cream);
   font-family: var(--font-body);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .chat-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--smoke);
 }
 
 .chat-input:focus {
   outline: none;
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  border-color: var(--brass);
+  border-color: var(--brass-light);
+  box-shadow: 0 0 0 3px rgba(201, 162, 90, 0.25);
 }
 
 .chat-input:disabled {
@@ -35,13 +37,13 @@
 }
 
 .send-button {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
   border: none;
-  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
-  color: white;
-  font-size: 1.25rem;
+  background: var(--brass);
+  color: var(--ink);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -50,8 +52,7 @@
 }
 
 .send-button:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+  background: var(--brass-light);
 }
 
 .send-button:disabled {
@@ -62,6 +63,8 @@
 
 .send-icon {
   display: block;
+  width: 22px;
+  height: 22px;
 }
 
 .loading-dots {
@@ -72,7 +75,7 @@
 .loading-dots .dot {
   width: 6px;
   height: 6px;
-  background: white;
+  background: var(--ink);
   border-radius: 50%;
   animation: loadingPulse 1.4s ease-in-out infinite both;
 }
@@ -81,13 +84,9 @@
 .loading-dots .dot:nth-child(2) { animation-delay: 0.2s; }
 .loading-dots .dot:nth-child(3) { animation-delay: 0.4s; }
 
-@keyframes loadingPulse {
-  0%, 80%, 100% {
-    transform: scale(0.6);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
+@media (max-width: 600px) {
+  .chat-input {
+    padding: 12px 14px;
+    font-size: 1rem;
   }
 }

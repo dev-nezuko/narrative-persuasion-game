@@ -1,8 +1,8 @@
 /* ============================================
-   Global Styles - Doorman Game (Cyberpunk)
+   Global styles: a late-night art-deco club door
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Limelight&family=Karla:wght@400;500;600;700&display=swap');
 
 * {
   margin: 0;
@@ -11,27 +11,24 @@
 }
 
 :root {
-  /* Neon Colors */
-  --neon-pink: #ff2d95;
-  --neon-cyan: #00f0ff;
-  --neon-purple: #b829dd;
-  --neon-green: #39ff14;
-  --neon-yellow: #ffff00;
-  
-  /* Background Colors */
-  --deep-purple: #1a0a2e;
-  --darker-purple: #0d0518;
-  --surface: rgba(26, 10, 46, 0.9);
-  
-  /* Gold accents */
-  --gold: #b8860b;
-  --gold-light: #d4af37;
-  
-  /* Typography */
-  --font-cyber: 'Orbitron', sans-serif;
-  --font-body: 'Rajdhani', sans-serif;
-  
-  /* Spacing */
+  --ink: #120e0c;
+  --night: #1d1714;
+  --surface: rgba(29, 23, 20, 0.92);
+  --cream: #f4ead8;
+  --smoke: #b3a796;
+
+  --brass: #c9a25a;
+  --brass-light: #e8cf98;
+  --gold: #c9a25a;
+  --velvet: #8c2433;
+  --velvet-bright: #c25566;
+  --patina: #86bcae;
+  --success: #a8d08a;
+  --danger: #e0645c;
+
+  --font-display: 'Limelight', 'Didot', Georgia, serif;
+  --font-body: 'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
   --header-height: 100px;
   --footer-height: 80px;
 }
@@ -46,8 +43,10 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(180deg, var(--deep-purple) 0%, var(--darker-purple) 50%, var(--deep-purple) 100%);
-  color: #f5f5f5;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 90%, rgba(201, 162, 90, 0.14) 0%, transparent 70%),
+    var(--ink);
+  color: var(--cream);
 }
 
 #root {
@@ -55,80 +54,38 @@ body {
   width: 100%;
 }
 
-/* Selection color */
 ::selection {
-  background: rgba(0, 240, 255, 0.3);
-  color: #f5f5f5;
+  background: rgba(201, 162, 90, 0.35);
+  color: var(--cream);
 }
 
-/* Focus outline */
 :focus-visible {
-  outline: 2px solid var(--neon-cyan);
-  outline-offset: 2px;
+  outline: 2px solid var(--brass-light);
+  outline-offset: 3px;
 }
 
-/* Disable text selection on buttons */
 button {
   user-select: none;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--darker-purple);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--neon-purple);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-cyan);
-}
-
-/* Keyframe animations */
 @keyframes popIn {
   0% {
-    transform: scale(0) translateY(20px);
+    transform: scale(0.85) translateY(12px);
     opacity: 0;
   }
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
   }
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    filter: drop-shadow(0 0 10px currentColor);
-  }
-  50% {
-    filter: drop-shadow(0 0 20px currentColor);
-  }
-}
-
-@keyframes scoreFloat {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-30px) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-60px) scale(0.8);
-  }
-}
-
-@keyframes partyLights {
-  0% { opacity: 0.7; }
-  100% { opacity: 1; }
 }
 
 @keyframes loadingPulse {
@@ -140,39 +97,6 @@ button {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Utility classes */
-.font-cyber {
-  font-family: var(--font-cyber);
-}
-
-.font-body {
-  font-family: var(--font-body);
-}
-
-.neon-text-cyan {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 10px var(--neon-cyan);
-}
-
-.neon-text-pink {
-  color: var(--neon-pink);
-  text-shadow: 0 0 10px var(--neon-pink);
-}
-
-.neon-text-purple {
-  color: var(--neon-purple);
-  text-shadow: 0 0 10px var(--neon-purple);
 }
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

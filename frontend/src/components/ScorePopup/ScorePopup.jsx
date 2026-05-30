@@ -18,9 +18,10 @@ export function ScorePopup({ score, onComplete }) {
   const isPositive = score >= 0;
   
   return (
-    <div className="score-popup-overlay">
+    <div className="score-popup-overlay" role="status">
       <div className={`score-popup ${isPositive ? 'positive' : 'negative'}`}>
         {isPositive ? '+' : ''}{score}
+        <span className="visually-hidden"> influence</span>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import App from './App';
 import { installFakeServer } from './test/fakeServer';
 
@@ -45,5 +45,33 @@ describe('App', () => {
     await userEvent.click(again);
     await waitFor(() => expect(screen.queryByRole('button', { name: /play again/i })).not.toBeInTheDocument());
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+  });
+
+  it('opens with Marcus speaking first and a hint for new players', async () => {
+    installFakeServer();
+    render(<App />);
+    expect(await screen.findByText(/Give me one good reason/)).toBeInTheDocument();
+    expect(screen.getByText(/Find out what he cares about/)).toBeInTheDocument();
+  });
+
+  it('offers a retry when the server cannot be reached, then recovers', async () => {
+    const offline = vi.fn(() => Promise.reject(new TypeError('Failed to fetch')));
+    vi.stubGlobal('fetch', offline);
+    render(<App />);
+    expect(await screen.findByRole('alert')).toHaveTextContent(/Could not reach the game server/);
+    expect(input()).toBeDisabled();
+    installFakeServer();
+    await userEvent.click(screen.getByRole('button', { name: /try again/i }));
+    await waitFor(() => expect(input()).toBeEnabled());
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
+  it('moves focus to Play again when access is granted', async () => {
+    installFakeServer({ chat: () => ({ status: 200, delta: 100, reply: 'Head on in, friend.' }) });
+    render(<App />);
+    await waitFor(() => expect(input()).toBeEnabled());
+    await userEvent.type(input(), 'Coltrane{enter}');
+    expect(await screen.findByRole('button', { name: /play again/i })).toHaveFocus();
+    expect(screen.getByRole('dialog', { name: /access granted/i })).toBeInTheDocument();
   });
 });
