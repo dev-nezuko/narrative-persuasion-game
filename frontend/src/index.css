@@ -174,3 +174,5 @@ button {
   color: var(--neon-purple);
   text-shadow: 0 0 10px var(--neon-purple);
 }
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

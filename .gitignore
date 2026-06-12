@@ -30,3 +30,6 @@ backend/sessions/*.json
 .pytest_cache/
 .coverage
 htmlcov/
+
+.env.*
+!.env.example

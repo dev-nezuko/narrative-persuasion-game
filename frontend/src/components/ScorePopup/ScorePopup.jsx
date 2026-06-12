@@ -5,7 +5,6 @@ export function ScorePopup({ score, onComplete }) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    setVisible(true);
     const timer = setTimeout(() => {
       setVisible(false);
       onComplete?.();

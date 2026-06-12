@@ -4,11 +4,10 @@ import './ChatInput.css';
 export function ChatInput({ onSend, isLoading, disabled }) {
   const [message, setMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim() && !isLoading && !disabled) {
-      onSend(message.trim());
-      setMessage('');
+      if (await onSend(message.trim())) setMessage('');
     }
   };
 
@@ -16,6 +15,8 @@ export function ChatInput({ onSend, isLoading, disabled }) {
     <form className="chat-input-form" onSubmit={handleSubmit}>
       <input
         type="text"
+        aria-label="Your message to the doorman"
+        maxLength={2000}
         className="chat-input"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -23,8 +24,9 @@ export function ChatInput({ onSend, isLoading, disabled }) {
         disabled={isLoading || disabled}
         autoComplete="off"
       />
-      <button 
-        type="submit" 
+      <button
+        type="submit"
+        aria-label="Send message"
         className="send-button"
         disabled={isLoading || disabled || !message.trim()}
       >

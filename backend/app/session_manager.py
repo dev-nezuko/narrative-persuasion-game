@@ -8,6 +8,11 @@
 
 import os
 import json
+import re
+import tempfile
+from threading import RLock
+from copy import deepcopy
+from contextlib import contextmanager
 from typing import Optional
 from datetime import datetime
 from pathlib import Path
@@ -17,8 +22,8 @@ from pathlib import Path
 # ============================================================
 
 # Directory to store session files
-SESSIONS_DIR = Path(__file__).parent.parent / "sessions"
-SESSIONS_DIR.mkdir(exist_ok=True)
+SESSIONS_DIR = Path(os.environ.get("DOORMAN_SESSION_DIR", str(Path(__file__).parent.parent / "sessions")))
+SESSION_LOCK = RLock()
 
 # Game configuration
 INFLUENCE_THRESHOLD = 100  # Score needed to win
@@ -31,9 +36,10 @@ MIN_SCORE = -50  # Floor for cumulative score
 
 def _get_session_path(session_id: str) -> Path:
     """Get the file path for a session."""
-    # Sanitize session_id to prevent path traversal
-    safe_id = "".join(c for c in session_id if c.isalnum() or c in "-_")
-    return SESSIONS_DIR / f"{safe_id}.json"
+    if not re.fullmatch(r"[A-Za-z0-9_-]{16,128}", session_id):
+        raise ValueError("Invalid session identifier")
+    return SESSIONS_DIR / f"{session_id}.json"
+
 
 
 def _load_session_from_file(session_id: str) -> Optional[dict]:
@@ -51,11 +57,16 @@ def _load_session_from_file(session_id: str) -> Optional[dict]:
 def _save_session_to_file(session: dict) -> None:
     """Save a session to disk."""
     path = _get_session_path(session["session_id"])
+    SESSIONS_DIR.mkdir(parents=True, exist_ok=True, mode=0o700)
+    temporary = None
     try:
-        with open(path, "w") as f:
-            json.dump(session, f, indent=2, default=str)
-    except IOError as e:
-        print(f"Error saving session: {e}")
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=SESSIONS_DIR, prefix=".session-", delete=False) as handle:
+            temporary = Path(handle.name)
+            json.dump(session, handle, indent=2, default=str)
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None and temporary.exists(): temporary.unlink()
+
 
 
 def _delete_session_file(session_id: str) -> None:
@@ -89,6 +100,7 @@ def get_session(session_id: str) -> dict:
         "message_count": int
     }
     """
+    _get_session_path(session_id)
     # Check cache first
     if session_id in _session_cache:
         return _session_cache[session_id]
@@ -270,3 +282,16 @@ def cleanup_old_sessions(max_age_hours: int = 24) -> int:
             continue
     
     return deleted
+
+
+@contextmanager
+def session_turn(session_id):
+    """Serialize local turns and roll state back when a provider/persistence step fails."""
+    with SESSION_LOCK:
+        original = deepcopy(get_session(session_id))
+        try:
+            yield
+        except Exception:
+            _session_cache[session_id] = original
+            _save_session_to_file(original)
+            raise

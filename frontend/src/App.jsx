@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useChat } from './hooks/useChat';
 import { Stage } from './components/Stage';
 import { InfluenceMeter } from './components/InfluenceMeter';
@@ -34,7 +33,7 @@ function App() {
       <header className="app-header">
         <div className="header-left">
           <h1 className="app-title">🎭 THE DOORMAN GAME</h1>
-          <p className="app-subtitle">BLVD DUBAI</p>
+          <p className="app-subtitle">FICTIONAL CLUB · MODEL-SCORED GAME</p>
         </div>
         <div className="header-center">
           <InfluenceMeter 
@@ -47,11 +46,13 @@ function App() {
           <button 
             className={`icon-btn ${ttsEnabled ? 'active' : ''}`}
             onClick={toggleTts}
+            aria-label={ttsEnabled ? 'Mute voice' : 'Enable voice'}
+            aria-pressed={ttsEnabled}
             title={ttsEnabled ? 'Mute voice' : 'Enable voice'}
           >
             {ttsEnabled ? '🔊' : '🔇'}
           </button>
-          <button className="icon-btn" onClick={reset} title="Start over">
+          <button className="icon-btn" onClick={reset} disabled={isLoading} aria-label="Start over" title="Start over">
             ↺
           </button>
         </div>
@@ -67,7 +68,7 @@ function App() {
 
       {/* Error Display */}
       {error && (
-        <div className="error-banner">
+        <div className="error-banner" role="alert">
           ⚠️ {error}
         </div>
       )}

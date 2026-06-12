@@ -1,26 +1,12 @@
-import { useEffect, useState } from 'react';
 import './Door.css';
 
 export function Door({ isOpen }) {
-  const [showInterior, setShowInterior] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      // Delay showing interior until doors start opening
-      const timer = setTimeout(() => setShowInterior(true), 500);
-      return () => clearTimeout(timer);
-    } else {
-      // Hide interior when doors close
-      setShowInterior(false);
-    }
-  }, [isOpen]);
-
   return (
     <div className="door-container">
       {/* Door Frame */}
       <div className="door-frame">
         {/* Club Interior (revealed when doors open) */}
-        <div className={`club-interior ${showInterior ? 'visible' : ''}`}>
+        <div className={`club-interior ${isOpen ? 'visible' : ''}`} style={{ transitionDelay: isOpen ? '500ms' : '0ms' }}>
           {/* Stage Lights */}
           <div className="lights-container">
             <div className="light-beam pink" style={{ left: '20%', transform: 'rotate(15deg)' }} />
